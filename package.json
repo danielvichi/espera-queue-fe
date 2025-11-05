@@ -39,6 +39,7 @@
     "eslint": "^9.23.0",
     "eslint-config-next": "^15.2.3",
     "husky": "^9.1.7",
+    "lint-staged": "^16.2.6",
     "postcss": "^8.5.3",
     "prettier": "^3.5.3",
     "prettier-plugin-tailwindcss": "^0.6.11",
@@ -49,5 +50,10 @@
   "ct3aMetadata": {
     "initVersion": "7.40.0"
   },
-  "packageManager": "npm@10.9.2"
+  "packageManager": "npm@10.9.2",
+  "husky": {
+    "hooks": {
+      "pre-commit": "npx lint-staged"
+    }
+  }
 }
