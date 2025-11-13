@@ -37,3 +37,4 @@ next-env.d.ts
 
 # generated code
 /src/app/api/generated/*
+/swagger/api-spec.json
