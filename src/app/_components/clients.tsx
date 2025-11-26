@@ -1,6 +1,8 @@
 "use client";
-import { useClientControllerCreateClientAndSignin } from "../api/generated/client";
-import { useClientControllerGetClientById } from "../api/generated/client/client";
+import {
+  useClientControllerCreateClientAndSignin,
+  useClientControllerGetClientById,
+} from "../api/generated/client/client";
 
 export function Clients() {
   const { data, trigger } = useClientControllerCreateClientAndSignin();

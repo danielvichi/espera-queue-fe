@@ -1,0 +1,127 @@
+import * as Form from "@radix-ui/react-form";
+import { useEffect, useState, type ChangeEvent } from "react";
+import type { FormErrorMessageList } from "~/app/_components/create-client-form/create-client-form";
+import FormError from "~/app/_components/create-client-form/form-error";
+import addErrorToQueue from "~/app/_components/create-client-form/utils/add-error-to-queue";
+import { VALIDATION_OPTIONS_FOR_ADMIN_LOGIN } from "~/configs/create-client-input";
+import validateString from "~/utils/validateString";
+
+type LoginCredentials = {
+  email: string;
+  passwordHash: string;
+};
+
+interface LoginFormProps {
+  isLoading: boolean;
+  onSubmit: (authCredentials: LoginCredentials) => void;
+}
+
+export default function LoginForm(props: LoginFormProps) {
+  const [email, setEmail] = useState<string | null>(null);
+  const [passwordString, setPasswordString] = useState<string | null>(null);
+  const [formErrorMessageList, setFormErrorMessageList] =
+    useState<FormErrorMessageList>([]);
+  const [isAllValid, setIsAllValid] = useState<boolean>(false);
+
+  function handleEmailInputChange(event: ChangeEvent<HTMLInputElement>) {
+    event.preventDefault();
+
+    const value = event.currentTarget.value;
+
+    const validationResult = validateString({
+      string: value,
+      options: {
+        fieldName: "email",
+        ...VALIDATION_OPTIONS_FOR_ADMIN_LOGIN.email,
+      },
+    });
+
+    if (!validationResult.isValid) {
+      addErrorToQueue(
+        ["email", validationResult.message],
+        setFormErrorMessageList,
+      );
+      return;
+    }
+
+    const filteredPreviousErrors = formErrorMessageList.filter(
+      (errorItem) => errorItem[0] !== "email",
+    );
+    setFormErrorMessageList(filteredPreviousErrors);
+    setEmail(value);
+  }
+
+  function handlePasswordInputChange(event: ChangeEvent<HTMLInputElement>) {
+    event.preventDefault();
+
+    const value = event.currentTarget.value;
+
+    setPasswordString(value);
+  }
+
+  async function handleSubmit(event: React.MouseEvent<HTMLButtonElement>) {
+    event.preventDefault();
+
+    if (!email || !passwordString || formErrorMessageList.length > 0) {
+      return;
+    }
+
+    // TODO HASH the passwordString
+    const passwordHash = passwordString;
+
+    props.onSubmit({
+      email,
+      passwordHash,
+    });
+  }
+
+  useEffect(
+    function checkLoginFormIsAllValidEffect() {
+      if (!email || !passwordString || formErrorMessageList.length > 0) {
+        setIsAllValid(false);
+        return;
+      }
+
+      setIsAllValid(true);
+    },
+    [formErrorMessageList, email, passwordString],
+  );
+
+  return (
+    <Form.Root className="flex flex-col gap-4">
+      <Form.Field name="email" className="flex flex-col gap-1">
+        <div className="flex flex-row gap-2">
+          <Form.Label>Email</Form.Label>
+
+          <Form.Control asChild>
+            <input type="text" onBlur={handleEmailInputChange} />
+          </Form.Control>
+        </div>
+        <FormError errorType="email" errorList={formErrorMessageList} />
+      </Form.Field>
+
+      <Form.Field name="password" className="flex flex-col gap-1">
+        <div className="flex flex-row gap-2">
+          <Form.Label>Password</Form.Label>
+
+          <Form.Control asChild>
+            <input type="text" onChange={handlePasswordInputChange} />
+          </Form.Control>
+        </div>
+        <FormError errorType="password" errorList={formErrorMessageList} />
+      </Form.Field>
+
+      {props.isLoading ? (
+        "Loading"
+      ) : (
+        <button
+          className="disabled:opacity-50"
+          disabled={!isAllValid}
+          onClick={(e) => handleSubmit(e)}
+        >
+          Login
+        </button>
+      )}
+    </Form.Root>
+  );
+}
