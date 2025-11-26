@@ -28,7 +28,7 @@ export function generateCSP(): { csp: string; nonce: string } {
   // most frameworks use eval() for hot reloading in development for performance reasons but it's a security risk in production.
   const cspHeader = `
     base-uri 'self';
-    script-src 'self' ${isDev ? "'unsafe-eval' 'unsafe-inline'" : `'nonce-${nonce}' 'strict-dynamic'`}  ${scriptSrcUrls};
+    script-src 'self' ${isDev ? "'unsafe-eval' 'unsafe-inline'," : `'nonce-${nonce}' 'strict-dynamic'`}  ${scriptSrcUrls};
     style-src 'self' 'unsafe-inline';
     object-src 'none';
     frame-ancestors 'none' ;
