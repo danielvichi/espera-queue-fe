@@ -1,24 +1,24 @@
-import * as Form from "@radix-ui/react-form";
+import * as Form from '@radix-ui/react-form';
 import {
   useCallback,
   useEffect,
   useState,
   type Dispatch,
   type SetStateAction,
-} from "react";
-import type { CreateClientWithAdminDto } from "~/app/api/generated/model";
+} from 'react';
+import type { CreateClientWithAdminDto } from '~/app/api/generated/model';
 import type {
   FormErrorMessageList,
   HandleInputBlurArgs,
-} from "./create-client-form";
-import FormError from "./form-error";
-import { updateInputData } from "./utils/update-input-form";
-import { VALIDATION_OPTIONS_FOR_CREATE_CLIENT_ADMIN } from "~/configs/create-client-input";
-import { PasswordInputForm } from "../password-input-form";
+} from './create-client-form';
+import FormError from './form-error';
+import { updateInputData } from './utils/update-input-form';
+import { VALIDATION_OPTIONS_FOR_CREATE_CLIENT_ADMIN } from '~/configs/create-client-input';
+import { PasswordInputForm } from '../password-input-form';
 
 type CreateClientWithAdminDtoOnlyAdminWithoutPassword = Omit<
-  CreateClientWithAdminDto["admin"],
-  "passwordHash"
+  CreateClientWithAdminDto['admin'],
+  'passwordHash'
 >;
 
 interface AdminFormFieldSectionProps {
@@ -69,7 +69,7 @@ export function AdminFormFieldSection(props: AdminFormFieldSectionProps) {
         data: value,
         dataField: field,
         validationConfigObject:
-          VALIDATION_OPTIONS_FOR_CREATE_CLIENT_ADMIN[field],
+          VALIDATION_OPTIONS_FOR_CREATE_CLIENT_ADMIN[field] ?? {},
         errorList: adminFormErrorMessageList,
         onError: setAdminFormErrorMessageList as unknown as (
           errors: unknown,
@@ -92,14 +92,14 @@ export function AdminFormFieldSection(props: AdminFormFieldSectionProps) {
       }
 
       return {
-        name: "",
-        address: "",
-        cnpj: "",
-        phone: "",
+        name: '',
+        address: '',
+        cnpj: '',
+        phone: '',
         admin: {
-          email: "",
-          name: "",
-          passwordHash: "",
+          email: '',
+          name: '',
+          passwordHash: '',
           [field]: validatedData,
         },
       };
@@ -117,15 +117,15 @@ export function AdminFormFieldSection(props: AdminFormFieldSectionProps) {
         updatedState = prevData;
       } else {
         updatedState = {
-          address: "",
+          address: '',
           admin: {
-            name: "",
-            email: "",
-            passwordHash: "",
+            name: '',
+            email: '',
+            passwordHash: '',
           },
-          cnpj: "",
-          name: "",
-          phone: "",
+          cnpj: '',
+          name: '',
+          phone: '',
         };
       }
 
@@ -144,19 +144,19 @@ export function AdminFormFieldSection(props: AdminFormFieldSectionProps) {
         updatedState = prevData;
       } else {
         updatedState = {
-          address: "",
+          address: '',
           admin: {
-            name: "",
-            email: "",
-            passwordHash: "",
+            name: '',
+            email: '',
+            passwordHash: '',
           },
-          cnpj: "",
-          name: "",
-          phone: "",
+          cnpj: '',
+          name: '',
+          phone: '',
         };
       }
 
-      updatedState.admin.passwordHash = "";
+      updatedState.admin.passwordHash = '';
       return updatedState;
     });
   }
@@ -177,7 +177,7 @@ export function AdminFormFieldSection(props: AdminFormFieldSectionProps) {
           <Form.Control asChild>
             <input
               type="text"
-              onBlur={(event) => handleOnInputBlur({ event, field: "name" })}
+              onBlur={(event) => handleOnInputBlur({ event, field: 'name' })}
             />
           </Form.Control>
         </div>
@@ -191,7 +191,7 @@ export function AdminFormFieldSection(props: AdminFormFieldSectionProps) {
           <Form.Control asChild>
             <input
               type="email"
-              onBlur={(event) => handleOnInputBlur({ event, field: "email" })}
+              onBlur={(event) => handleOnInputBlur({ event, field: 'email' })}
             />
           </Form.Control>
         </div>
