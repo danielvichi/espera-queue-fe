@@ -1,20 +1,14 @@
-"use client";
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  type JSX,
-} from "react";
-import type { AdminWithClientDto, SignInDto } from "../api/generated/model";
+'use client';
+import { createContext, useContext, useState, type JSX } from 'react';
+import type { AdminWithClientDto, SignInDto } from '../api/generated/model';
 import {
   authControllerCheckAdminCredentials,
   authControllerLogout,
   useAuthControllerVerify,
-} from "../api/generated/auth/auth";
-import { jwtDecode } from "jwt-decode";
-import { type AxiosError, type AxiosResponse } from "axios";
-import setUserFromJWT from "~/utils/setUserFromJWT";
+} from '../api/generated/auth/auth';
+import { jwtDecode } from 'jwt-decode';
+import { type AxiosError, type AxiosResponse } from 'axios';
+import setUserFromJWT from '~/utils/setUserFromJWT';
 
 interface AdminAuthenticationContextType {
   user: AdminWithClientDto | null;
@@ -37,9 +31,16 @@ function AdminAuthenticationProvider(
   props: AdminAuthenticationProviderProps,
 ): JSX.Element {
   const [user, setUser] = useState<AdminWithClientDto | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
+  /**
+   * Determine when to run the credentials verification check on mount and on user login
+   */
+  const onMountState = !user && isLoading;
+  const onUserLoggedInState = !!user && !isLoading;
+
+  // Use the verify hook to regularly check admin credentials
   const {
     mutate: verifyMutate,
     isLoading: isVerifyLoading,
@@ -49,25 +50,33 @@ function AdminAuthenticationProvider(
       withCredentials: true,
     },
     swr: {
-      refreshWhenHidden: false,
-      revalidateOnFocus: true,
-      refreshInterval: 1000 * 60 * 60 * 5,
+      enabled: onMountState || onUserLoggedInState,
+      revalidateOnFocus: false,
+      refreshInterval: 1000 * 60 * 5, // 5 minutes
       onSuccess: (result) => {
         setUserFromJWT({
           jwt: result.data,
           setUser: setUser,
         });
+        setIsLoading(false);
       },
       onError: (error: AxiosError) => {
-        void adminLogout();
-        console.log("Unauthorized", error.message);
+        if (user) {
+          setUser(null);
+        }
+        setIsLoading(false);
+        console.log('Unauthorized', error.message);
       },
     },
   });
 
+  /**
+   * Function to log in an admin user
+   *
+   * @param {SignInDto} authCredential - The admin's authentication credentials
+   * @returns
+   */
   async function adminLogin(authCredential: SignInDto) {
-    console.log("adminLogin", authCredential);
-
     if (!authCredential.email || !authCredential.passwordHash) {
       return;
     }
@@ -84,7 +93,7 @@ function AdminAuthenticationProvider(
     })
       .then((response: AxiosResponse) => {
         if (response.status >= 300 || !response?.headers) {
-          setErrorMessage("Something went wrong, please try again");
+          setErrorMessage('Something went wrong, please try again');
           return;
         }
 
@@ -98,6 +107,9 @@ function AdminAuthenticationProvider(
     setIsLoading(false);
   }
 
+  /**
+   * Function to log out the current admin user
+   */
   async function adminLogout() {
     authControllerLogout({
       withCredentials: true,
@@ -110,10 +122,6 @@ function AdminAuthenticationProvider(
         console.log(error.message);
       });
   }
-
-  useEffect(function onInit() {
-    void verifyMutate();
-  }, []);
 
   const isLoadingOrValidating =
     isLoading || isVerifyLoading || isVerifyValidating;
@@ -141,7 +149,7 @@ export const useAdminAuthenticationContext =
 
     if (!context) {
       throw new Error(
-        "useAdminAuthenticationContext must be used within a AdminAuthenticationProvider",
+        'useAdminAuthenticationContext must be used within a AdminAuthenticationProvider',
       );
     }
 
