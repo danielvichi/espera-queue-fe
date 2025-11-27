@@ -73,7 +73,7 @@ function AdminAuthenticationProvider(
   /**
    * Function to log in an admin user
    *
-   * @param {SignInDto} authCredential - The admin's authentication credentials
+   * @param {SignInDto} authCredential - The admin"s authentication credentials
    * @returns
    */
   async function adminLogin(authCredential: SignInDto) {
