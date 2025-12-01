@@ -1,29 +1,87 @@
-# Create T3 App
+# About
 
+This is personal no comercial project, intended to help small businesses manage their customer queues more efficiently. It allows businesses to create and manage queues, while customers can join these queues remotely via a web interface.
 This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
 
-## What's next? How do I make an app with this?
+## Pages and components overview
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+ - PAGES 
+  - Main Page
+  - About Project for business
+  - Create account for business
+ 
+  - Login Page
+    - Form
+    - Toggle Admin (default) / User Queue
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+  - Create User Queue Account Page 
+    - Form
+    - Return to previous page
+ 
+  - Enter Default Queue User Queue -> Via QR code or Friendly URL
+      - Average waiting Time
+    - Enter Queue Button
+    - If not logged in show User Queue Login Page
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Drizzle](https://orm.drizzle.team)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+  - Enter Priority Queue User Queue -> Via QR code
+  - Average waiting Time
+  - Enter Queue Button
+    - If not logged in show User Queue Login Page
 
-## Learn More
+ - User 
+  -- Queue Status (when in a queue)
+    - Queue average waiting time
+    - Queue Line Id
+    - Exit Queue Button
+  
+  -- User account / profile Page
+    - contact info
+    - change password
+    - disable account button
+    - Disable account confirmation Modal
+ 
+  - Client Owner / Admin
+   -- Client page
+      - client info
+      - contact info
+      - Active Unities
+      - Active Queues
+      - Manage Admin Button
+   
+    -- Manage Admin Page
+      - List Unities
+      - List Admins
+      - Add Admin Button
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+    --- Add Admin page
+      - Form
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+  -- Unity Page
+    - unity info
+    - contact info
+    - Queues
+    - Manage Admin Button
+    - Generate Queue Link QR CODE
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
 
-## How do I deploy this?
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+-LAYOUTS
+  - Default 
+    -- Header
+    - Login / Logout / My account
+  - Admin (side menu)
+    - Client
+    - Unity
+    - Queue
+    - Admin
+
+
+-CONTEXTS
+  - AuthenticationProvider
+    - Role
+    - user info
+  - Client Provider
+    - Client info
+  - Queue UserProvider
+    - Queue added info
+      - Queue position Id
