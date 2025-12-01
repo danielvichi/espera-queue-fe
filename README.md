@@ -1,6 +1,6 @@
 # About
 
-This is personal no comercial project, intended to help small businesses manage their customer queues more efficiently. It allows businesses to create and manage queues, while customers can join these queues remotely via a web interface.
+This is personal no commercial project, intended to help small businesses manage their customer queues more efficiently. It allows businesses to create and manage queues, while customers can join these queues remotely via a web interface.
 This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
 
 ## Pages and components overview

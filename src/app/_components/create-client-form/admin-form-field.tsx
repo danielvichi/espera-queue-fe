@@ -15,6 +15,7 @@ import FormError from './form-error';
 import { updateInputData } from './utils/update-input-form';
 import { VALIDATION_OPTIONS_FOR_CREATE_CLIENT_ADMIN } from '~/configs/create-client-input';
 import { PasswordInputForm } from '../password-input-form';
+import Input from '../input';
 
 type CreateClientWithAdminDtoOnlyAdminWithoutPassword = Omit<
   CreateClientWithAdminDto['admin'],
@@ -175,7 +176,7 @@ export function AdminFormFieldSection(props: AdminFormFieldSectionProps) {
           <Form.Label>Owner Name</Form.Label>
 
           <Form.Control asChild>
-            <input
+            <Input
               type="text"
               onBlur={(event) => handleOnInputBlur({ event, field: 'name' })}
             />
@@ -189,7 +190,7 @@ export function AdminFormFieldSection(props: AdminFormFieldSectionProps) {
           <Form.Label>e-mail</Form.Label>
 
           <Form.Control asChild>
-            <input
+            <Input
               type="email"
               onBlur={(event) => handleOnInputBlur({ event, field: 'email' })}
             />

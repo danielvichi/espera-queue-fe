@@ -1,10 +1,12 @@
-import * as Form from "@radix-ui/react-form";
-import { useEffect, useState, type ChangeEvent } from "react";
-import type { FormErrorMessageList } from "~/app/_components/create-client-form/create-client-form";
-import FormError from "~/app/_components/create-client-form/form-error";
-import addErrorToQueue from "~/app/_components/create-client-form/utils/add-error-to-queue";
-import { VALIDATION_OPTIONS_FOR_ADMIN_LOGIN } from "~/configs/create-client-input";
-import validateString from "~/utils/validateString";
+import * as Form from '@radix-ui/react-form';
+import { useEffect, useState, type ChangeEvent } from 'react';
+import Button from '~/app/_components/buton';
+import type { FormErrorMessageList } from '~/app/_components/create-client-form/create-client-form';
+import FormError from '~/app/_components/create-client-form/form-error';
+import addErrorToQueue from '~/app/_components/create-client-form/utils/add-error-to-queue';
+import Input from '~/app/_components/input';
+import { VALIDATION_OPTIONS_FOR_ADMIN_LOGIN } from '~/configs/create-client-input';
+import validateString from '~/utils/validateString';
 
 type LoginCredentials = {
   email: string;
@@ -31,21 +33,21 @@ export default function LoginForm(props: LoginFormProps) {
     const validationResult = validateString({
       string: value,
       options: {
-        fieldName: "email",
+        fieldName: 'email',
         ...VALIDATION_OPTIONS_FOR_ADMIN_LOGIN.email,
       },
     });
 
     if (!validationResult.isValid) {
       addErrorToQueue(
-        ["email", validationResult.message],
+        ['email', validationResult.message],
         setFormErrorMessageList,
       );
       return;
     }
 
     const filteredPreviousErrors = formErrorMessageList.filter(
-      (errorItem) => errorItem[0] !== "email",
+      (errorItem) => errorItem[0] !== 'email',
     );
     setFormErrorMessageList(filteredPreviousErrors);
     setEmail(value);
@@ -94,7 +96,7 @@ export default function LoginForm(props: LoginFormProps) {
           <Form.Label>Email</Form.Label>
 
           <Form.Control asChild>
-            <input type="text" onBlur={handleEmailInputChange} />
+            <Input type="text" onBlur={handleEmailInputChange} />
           </Form.Control>
         </div>
         <FormError errorType="email" errorList={formErrorMessageList} />
@@ -105,22 +107,22 @@ export default function LoginForm(props: LoginFormProps) {
           <Form.Label>Password</Form.Label>
 
           <Form.Control asChild>
-            <input type="text" onChange={handlePasswordInputChange} />
+            <Input type="text" onChange={handlePasswordInputChange} />
           </Form.Control>
         </div>
         <FormError errorType="password" errorList={formErrorMessageList} />
       </Form.Field>
 
       {props.isLoading ? (
-        "Loading"
+        'Loading'
       ) : (
-        <button
-          className="disabled:opacity-50"
+        <Button
+          isLoading={props.isLoading}
           disabled={!isAllValid}
           onClick={(e) => handleSubmit(e)}
         >
           Login
-        </button>
+        </Button>
       )}
     </Form.Root>
   );

@@ -1,4 +1,4 @@
-import * as Form from "@radix-ui/react-form";
+import * as Form from '@radix-ui/react-form';
 import {
   useCallback,
   useEffect,
@@ -6,20 +6,21 @@ import {
   useState,
   type Dispatch,
   type SetStateAction,
-} from "react";
+} from 'react';
 import type {
   FormErrorMessageList,
   HandleInputBlurArgs,
-} from "./create-client-form";
-import type { CreateClientWithAdminDto } from "~/app/api/generated/model";
-import { VALIDATION_OPTIONS_FOR_CREATE_CLIENT } from "~/configs/create-client-input";
-import { updateInputData } from "./utils/update-input-form";
-import FormError from "./form-error";
-import formatPhoneString from "~/utils/formatPhoneString";
+} from './create-client-form';
+import type { CreateClientWithAdminDto } from '~/app/api/generated/model';
+import { VALIDATION_OPTIONS_FOR_CREATE_CLIENT } from '~/configs/create-client-input';
+import { updateInputData } from './utils/update-input-form';
+import FormError from './form-error';
+import formatPhoneString from '~/utils/formatPhoneString';
+import Input from '../input';
 
 type CreateClientWithAdminDtoWithoutAdmin = Omit<
   CreateClientWithAdminDto,
-  "admin"
+  'admin'
 >;
 
 interface ClientFormFieldSectionProps {
@@ -44,7 +45,7 @@ export default function ClientFormFieldSection(
     }
 
     const hasRequiredFieldError =
-      clientFormErrorMessageList.filter((errorItem) => errorItem[0] === "name")
+      clientFormErrorMessageList.filter((errorItem) => errorItem[0] === 'name')
         .length > 0;
 
     if (hasRequiredFieldError) {
@@ -57,13 +58,13 @@ export default function ClientFormFieldSection(
 
   function handlePhoneChange(string: string) {
     if (!phoneInputRef.current) {
-      return "";
+      return '';
     }
     const formattedValue = formatPhoneString(string);
 
     phoneInputRef.current.value = formattedValue;
 
-    return formattedValue ?? "";
+    return formattedValue ?? '';
   }
 
   function updateClientInputFields({
@@ -72,7 +73,7 @@ export default function ClientFormFieldSection(
   }: HandleInputBlurArgs<CreateClientWithAdminDtoWithoutAdmin>) {
     let value = event.target.value;
 
-    if (field === "phone") {
+    if (field === 'phone') {
       value = handlePhoneChange(value);
     }
 
@@ -88,8 +89,8 @@ export default function ClientFormFieldSection(
       },
     );
 
-    if (field === "phone") {
-      console.log("validatedData", validatedData);
+    if (field === 'phone') {
+      console.log('validatedData', validatedData);
     }
 
     if (!validatedData) {
@@ -105,15 +106,15 @@ export default function ClientFormFieldSection(
       }
 
       return {
-        name: "",
-        address: "",
-        cnpj: "",
-        phone: "",
+        name: '',
+        address: '',
+        cnpj: '',
+        phone: '',
         [field]: validatedData,
         admin: {
-          email: "",
-          name: "",
-          passwordHash: "",
+          email: '',
+          name: '',
+          passwordHash: '',
         },
       };
     });
@@ -133,10 +134,10 @@ export default function ClientFormFieldSection(
           <Form.Label>Business Name</Form.Label>
 
           <Form.Control asChild>
-            <input
+            <Input
               type="text"
               onChange={(event) =>
-                updateClientInputFields({ event, field: "name" })
+                updateClientInputFields({ event, field: 'name' })
               }
               required
             />
@@ -150,10 +151,10 @@ export default function ClientFormFieldSection(
           <Form.Label>CNPJ</Form.Label>
 
           <Form.Control asChild>
-            <input
+            <Input
               type="text"
               onChange={(event) =>
-                updateClientInputFields({ event, field: "cnpj" })
+                updateClientInputFields({ event, field: 'cnpj' })
               }
             />
           </Form.Control>
@@ -166,10 +167,10 @@ export default function ClientFormFieldSection(
           <Form.Label>Address</Form.Label>
 
           <Form.Control asChild>
-            <input
+            <Input
               type="text"
               onChange={(event) =>
-                updateClientInputFields({ event, field: "address" })
+                updateClientInputFields({ event, field: 'address' })
               }
             />
           </Form.Control>
@@ -182,11 +183,11 @@ export default function ClientFormFieldSection(
           <Form.Label>Phone</Form.Label>
 
           <Form.Control asChild>
-            <input
+            <Input
               type="text"
               ref={phoneInputRef}
               onChange={(event) =>
-                updateClientInputFields({ event, field: "phone" })
+                updateClientInputFields({ event, field: 'phone' })
               }
             />
           </Form.Control>
