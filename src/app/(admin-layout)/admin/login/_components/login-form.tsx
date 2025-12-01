@@ -1,6 +1,6 @@
 import * as Form from '@radix-ui/react-form';
 import { useEffect, useState, type ChangeEvent } from 'react';
-import Button from '~/app/_components/buton';
+import Button from '~/app/_components/button';
 import type { FormErrorMessageList } from '~/app/_components/create-client-form/create-client-form';
 import FormError from '~/app/_components/create-client-form/form-error';
 import addErrorToQueue from '~/app/_components/create-client-form/utils/add-error-to-queue';

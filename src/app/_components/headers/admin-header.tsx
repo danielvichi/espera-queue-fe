@@ -1,7 +1,7 @@
-"use client";
-import type { JSX } from "react";
-import LogoutButton from "./lougout-button";
-import { useAdminAuthenticationContext } from "~/app/_auth/admin-authentication-provider";
+'use client';
+import type { JSX } from 'react';
+import LogoutButton from './logout-button';
+import { useAdminAuthenticationContext } from '~/app/_auth/admin-authentication-provider';
 
 export function AdminHeader(): JSX.Element {
   const { user } = useAdminAuthenticationContext();
@@ -9,7 +9,7 @@ export function AdminHeader(): JSX.Element {
   return (
     <div className="absolute top-0 right-0 left-0 bg-gray-400 p-2">
       ADMIN HEADER
-      {user ? <LogoutButton /> : ""}
+      {user ? <LogoutButton /> : ''}
     </div>
   );
 }
