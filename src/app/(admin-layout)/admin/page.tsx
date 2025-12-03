@@ -15,9 +15,11 @@ function LoadingPageState() {
 
 function LoadedPageState() {
   const { user } = useAdminAuthenticationContext();
+
+  const isAdminAuthenticated = Boolean(user?.id);
   return (
     <PageWrapperLayout>
-      {user?.id ? 'DASHBOARD' : <LoginModule />}
+      {isAdminAuthenticated ? 'DASHBOARD' : <LoginModule />}
     </PageWrapperLayout>
   );
 }

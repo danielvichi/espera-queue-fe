@@ -14,9 +14,11 @@ import type {
 import type { CreateClientWithAdminDto } from '~/app/api/generated/model';
 import { VALIDATION_OPTIONS_FOR_CREATE_CLIENT } from '~/configs/create-client-input';
 import { updateInputData } from './utils/update-input-form';
-import FormError from './form-error';
+import FormError from './components/form-error';
 import formatPhoneString from '~/utils/formatPhoneString';
 import Input from '../../_components/input';
+import StyledFormLabel from './components/styled-form-label';
+import StyledFormWrapper from './components/style-form-wrapper';
 
 type CreateClientWithAdminDtoWithoutAdmin = Omit<
   CreateClientWithAdminDto,
@@ -129,69 +131,81 @@ export default function ClientFormFieldSection(
 
   return (
     <>
-      <Form.Field name="name" className="flex flex-col gap-1">
-        <div className="flex flex-row gap-2">
-          <Form.Label>Business Name</Form.Label>
+      <Form.Field name="name" className="flex flex-col gap-2">
+        <StyledFormWrapper>
+          <>
+            <StyledFormLabel>Business Name</StyledFormLabel>
 
-          <Form.Control asChild>
-            <Input
-              type="text"
-              onChange={(event) =>
-                updateClientInputFields({ event, field: 'name' })
-              }
-              required
-            />
-          </Form.Control>
-        </div>
+            <Form.Control asChild>
+              <Input
+                type="text"
+                className="flex w-full"
+                onChange={(event) =>
+                  updateClientInputFields({ event, field: 'name' })
+                }
+                required
+              />
+            </Form.Control>
+          </>
+        </StyledFormWrapper>
         <FormError errorType="name" errorList={clientFormErrorMessageList} />
       </Form.Field>
 
       <Form.Field name="cnpj" className="flex flex-col gap-1">
-        <div className="flex flex-row gap-2">
-          <Form.Label>CNPJ</Form.Label>
+        <StyledFormWrapper>
+          <>
+            <StyledFormLabel>CNPJ</StyledFormLabel>
 
-          <Form.Control asChild>
-            <Input
-              type="text"
-              onChange={(event) =>
-                updateClientInputFields({ event, field: 'cnpj' })
-              }
-            />
-          </Form.Control>
-        </div>
+            <Form.Control asChild>
+              <Input
+                type="text"
+                className="flex w-full"
+                onChange={(event) =>
+                  updateClientInputFields({ event, field: 'cnpj' })
+                }
+              />
+            </Form.Control>
+          </>
+        </StyledFormWrapper>
         <FormError errorType="cnpj" errorList={clientFormErrorMessageList} />
       </Form.Field>
 
       <Form.Field name="address" className="flex flex-col gap-1">
-        <div className="flex flex-row gap-2">
-          <Form.Label>Address</Form.Label>
+        <StyledFormWrapper>
+          <>
+            <StyledFormLabel>Address</StyledFormLabel>
 
-          <Form.Control asChild>
-            <Input
-              type="text"
-              onChange={(event) =>
-                updateClientInputFields({ event, field: 'address' })
-              }
-            />
-          </Form.Control>
-        </div>
+            <Form.Control asChild>
+              <Input
+                type="text"
+                className="flex w-full"
+                onChange={(event) =>
+                  updateClientInputFields({ event, field: 'address' })
+                }
+              />
+            </Form.Control>
+          </>
+        </StyledFormWrapper>
         <FormError errorType="address" errorList={clientFormErrorMessageList} />
       </Form.Field>
 
       <Form.Field name="phone" className="flex flex-col gap-1">
-        <div className="flex flex-row gap-2">
-          <Form.Label>Phone</Form.Label>
+        <StyledFormWrapper>
+          <>
+            <StyledFormLabel>Phone</StyledFormLabel>
 
-          <Form.Control asChild>
-            <Input
-              type="text"
-              ref={phoneInputRef}
-              onChange={(event) =>
-                updateClientInputFields({ event, field: 'phone' })
-              }
-            />
-          </Form.Control>
-        </div>
+            <Form.Control asChild>
+              <Input
+                type="text"
+                className="flex w-full"
+                ref={phoneInputRef}
+                onChange={(event) =>
+                  updateClientInputFields({ event, field: 'phone' })
+                }
+              />
+            </Form.Control>
+          </>
+        </StyledFormWrapper>
         <FormError errorType="phone" errorList={clientFormErrorMessageList} />
       </Form.Field>
     </>

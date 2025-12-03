@@ -1,6 +1,6 @@
 import type React from 'react';
-import Button from '../button';
 import { useRouter } from 'next/navigation';
+import Button from '~/app/_components/button';
 
 export default function LogoutButton() {
   const router = useRouter();

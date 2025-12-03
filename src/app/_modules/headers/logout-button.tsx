@@ -1,6 +1,6 @@
 import type React from 'react';
+import Button from '~/app/_components/button';
 import { useAdminAuthenticationContext } from '~/app/_contexts/admin-authentication-provider';
-import Button from '../button';
 
 export default function LogoutButton() {
   const { adminLogout } = useAdminAuthenticationContext();

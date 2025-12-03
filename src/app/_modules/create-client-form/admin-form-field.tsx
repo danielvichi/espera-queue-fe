@@ -11,11 +11,13 @@ import type {
   FormErrorMessageList,
   HandleInputBlurArgs,
 } from './create-client-form';
-import FormError from './form-error';
+import FormError from './components/form-error';
 import { updateInputData } from './utils/update-input-form';
 import { VALIDATION_OPTIONS_FOR_CREATE_CLIENT_ADMIN } from '~/configs/create-client-input';
-import { PasswordInputForm } from '../../_components/password-input-form';
+import { PasswordInputForm } from './components/password-input-form';
 import Input from '../../_components/input';
+import StyledFormLabel from './components/styled-form-label';
+import StyledFormWrapper from './components/style-form-wrapper';
 
 type CreateClientWithAdminDtoOnlyAdminWithoutPassword = Omit<
   CreateClientWithAdminDto['admin'],
@@ -171,31 +173,37 @@ export function AdminFormFieldSection(props: AdminFormFieldSectionProps) {
 
   return (
     <>
-      <Form.Field name="name" className="flex flex-col gap-1">
-        <div className="flex flex-row gap-2">
-          <Form.Label>Owner Name</Form.Label>
+      <Form.Field name="name" className="flex flex-col gap-2">
+        <StyledFormWrapper>
+          <>
+            <StyledFormLabel>Owner Name</StyledFormLabel>
 
-          <Form.Control asChild>
-            <Input
-              type="text"
-              onBlur={(event) => handleOnInputBlur({ event, field: 'name' })}
-            />
-          </Form.Control>
-        </div>
+            <Form.Control asChild>
+              <Input
+                type="text"
+                className="flex w-full"
+                onBlur={(event) => handleOnInputBlur({ event, field: 'name' })}
+              />
+            </Form.Control>
+          </>
+        </StyledFormWrapper>
         <FormError errorType="name" errorList={adminFormErrorMessageList} />
       </Form.Field>
 
       <Form.Field name="email" className="flex flex-col gap-1">
-        <div className="flex flex-row gap-2">
-          <Form.Label>e-mail</Form.Label>
+        <StyledFormWrapper>
+          <>
+            <StyledFormLabel>e-mail</StyledFormLabel>
 
-          <Form.Control asChild>
-            <Input
-              type="email"
-              onBlur={(event) => handleOnInputBlur({ event, field: 'email' })}
-            />
-          </Form.Control>
-        </div>
+            <Form.Control asChild>
+              <Input
+                type="email"
+                className="flex w-full"
+                onBlur={(event) => handleOnInputBlur({ event, field: 'email' })}
+              />
+            </Form.Control>
+          </>
+        </StyledFormWrapper>
         <FormError errorType="email" errorList={adminFormErrorMessageList} />
       </Form.Field>
 

@@ -2,7 +2,7 @@ import * as Form from '@radix-ui/react-form';
 import { useEffect, useState, type ChangeEvent } from 'react';
 import Button from '~/app/_components/button';
 import type { FormErrorMessageList } from '~/app/_modules/create-client-form/create-client-form';
-import FormError from '~/app/_modules/create-client-form/form-error';
+import FormError from '~/app/_modules/create-client-form/components/form-error';
 import addErrorToQueue from '~/app/_modules/create-client-form/utils/add-error-to-queue';
 import Input from '~/app/_components/input';
 import { VALIDATION_OPTIONS_FOR_ADMIN_LOGIN } from '~/configs/create-client-input';

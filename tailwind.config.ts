@@ -4,10 +4,10 @@ export default {
   content: ["./src/app/**/*.{js,ts,jsx,tsx,mdx}"],
   theme: {
     extend: {
-      screens: {
-        "2xl": "1440px",
-        "3xl": "1700px",
-      },
+      // screens: {
+      //   "2xl": "1440px",
+      //   "3xl": "1700px",
+      // },
       colors: {},
       gridTemplateColumns: {
         "13": "repeat(13, minmax(0, 1fr))",

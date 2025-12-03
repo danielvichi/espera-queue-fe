@@ -6,6 +6,7 @@ import * as Form from '@radix-ui/react-form';
 import type { CreateClientWithAdminDto } from '../../api/generated/model';
 import ClientFormFieldSection from './client-form-field';
 import { AdminFormFieldSection } from './admin-form-field';
+import Button from '~/app/_components/button';
 
 export type FormErrorMessageList = Array<[string, string]>;
 
@@ -17,6 +18,38 @@ export interface HandleInputBlurArgs<T> {
 const KNOWN_ERROR: Record<string, string> = {
   '409': 'Account already exist',
 };
+
+function CardContainer(props: { children: React.ReactNode }) {
+  return (
+    <div className="absolute flex flex-col gap-4 h-full p-6 w-full max-w-4xl border border-red-400">
+      {props.children}
+    </div>
+  );
+}
+
+interface CardCarrouselContainerProps {
+  activeIndex?: number;
+  getTotalChildrenAmount?: (amount: number) => void;
+  children: React.ReactNode;
+}
+
+function CardCarrouselContainer(props: CardCarrouselContainerProps) {
+  const { children, activeIndex, getTotalChildrenAmount } = props;
+
+  const childrenAmount = children
+    ? Array.isArray(children)
+      ? children.length
+      : 1
+    : 0;
+
+  getTotalChildrenAmount?.(childrenAmount);
+
+  return (
+    <div className="relative min-h-[230px] flex flex-row gap-4 overflow-x-auto w-full max-w-4xl">
+      {children}
+    </div>
+  );
+}
 
 function Errors(props: { errorCode: number | null }) {
   const { errorCode } = props;
@@ -87,30 +120,38 @@ export function CreateClientForm() {
 
   return (
     <>
+      Create Business Account
       <Errors errorCode={errorCode} />
+      <Form.Root>
+        <CardCarrouselContainer>
+          <CardContainer>
+            <ClientFormFieldSection
+              inputData={inputData}
+              updateInputData={setInputData}
+              onIsRequiredFieldsOk={() => {
+                setIsClientFormOk(true);
+              }}
+              onIsRequiredFieldsFailed={() => {
+                setIsClientFormOk(false);
+              }}
+            />
+          </CardContainer>
 
-      <Form.Root className="flex flex-col gap-4">
-        <ClientFormFieldSection
-          inputData={inputData}
-          updateInputData={setInputData}
-          onIsRequiredFieldsOk={() => {
-            setIsClientFormOk(true);
-          }}
-          onIsRequiredFieldsFailed={() => {
-            setIsClientFormOk(false);
-          }}
-        />
-        <AdminFormFieldSection
-          inputData={inputData}
-          updateInputData={setInputData}
-          onIsRequiredFieldsOk={() => {
-            setIsAdminFormOk(true);
-          }}
-          onIsRequiredFieldsFailed={() => {
-            setIsAdminFormOk(false);
-          }}
-        />
-        <button
+          <CardContainer>
+            <AdminFormFieldSection
+              inputData={inputData}
+              updateInputData={setInputData}
+              onIsRequiredFieldsOk={() => {
+                setIsAdminFormOk(true);
+              }}
+              onIsRequiredFieldsFailed={() => {
+                setIsAdminFormOk(false);
+              }}
+            />
+          </CardContainer>
+        </CardCarrouselContainer>
+
+        <Button
           className="disabled:opacity-50"
           disabled={
             !isClientFormIsOk ||
@@ -121,7 +162,7 @@ export function CreateClientForm() {
           onClick={(e) => handleSubmit(e)}
         >
           Create Account
-        </button>
+        </Button>
       </Form.Root>
     </>
   );

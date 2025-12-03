@@ -7,7 +7,7 @@ export function AdminHeader(): JSX.Element {
   const { user } = useAdminAuthenticationContext();
 
   return (
-    <div className="absolute top-0 right-0 left-0 bg-gray-400 p-2">
+    <div className="absolute top-0 right-0 left-0 flex items-center justify-between bg-gray-400 p-2 ">
       ADMIN HEADER
       {user ? <LogoutButton /> : ''}
     </div>
