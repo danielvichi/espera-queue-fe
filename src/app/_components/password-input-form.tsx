@@ -1,11 +1,11 @@
-import * as Form from "@radix-ui/react-form";
-import { useRef, useState } from "react";
-import type { FormErrorMessageList } from "./create-client-form/create-client-form";
-import validatePassword from "~/utils/validatePassword";
+import * as Form from '@radix-ui/react-form';
+import { useRef, useState } from 'react';
+import type { FormErrorMessageList } from '../_modules/create-client-form/create-client-form';
+import validatePassword from '~/utils/validatePassword';
 import addErrorToQueue, {
   removeAllFieldError,
-} from "./create-client-form/utils/add-error-to-queue";
-import FormError from "./create-client-form/form-error";
+} from '../_modules/create-client-form/utils/add-error-to-queue';
+import FormError from '../_modules/create-client-form/form-error';
 
 interface PasswordInputFormProps {
   onCheckSuccess: (passwordString: string) => void;
@@ -32,18 +32,18 @@ export function PasswordInputForm(props: PasswordInputFormProps) {
     if (!validationResult.isValid) {
       props.onCheckFail?.();
       removeAllFieldError(
-        "password",
+        'password',
         passwordFormErrorMessageList,
         setPasswordFormErrorMessageList,
       );
       addErrorToQueue(
-        ["password", validationResult.message],
+        ['password', validationResult.message],
         setPasswordFormErrorMessageList,
       );
       return;
     } else {
       removeAllFieldError(
-        "password",
+        'password',
         passwordFormErrorMessageList,
         setPasswordFormErrorMessageList,
       );
@@ -58,13 +58,13 @@ export function PasswordInputForm(props: PasswordInputFormProps) {
     if (!passwordMatch) {
       props.onCheckFail?.();
       addErrorToQueue(
-        ["password", "Password does not match"],
+        ['password', 'Password does not match'],
         setPasswordFormErrorMessageList,
       );
       return;
     } else {
       removeAllFieldError(
-        "password",
+        'password',
         passwordFormErrorMessageList,
         setPasswordFormErrorMessageList,
       );

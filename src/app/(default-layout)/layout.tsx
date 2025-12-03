@@ -1,6 +1,5 @@
-import type { JSX } from "react";
-import { Clients } from "../_components/clients";
-import { DefaultHeader } from "../_components/headers/default-header";
+import type { JSX } from 'react';
+import { DefaultHeader } from '../_modules/headers/default-header';
 
 export default function DefaultPageLayout({
   children,

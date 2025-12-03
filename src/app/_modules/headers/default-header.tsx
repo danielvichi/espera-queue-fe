@@ -1,5 +1,5 @@
-"use client";
-import type { JSX } from "react";
+'use client';
+import type { JSX } from 'react';
 
 export function DefaultHeader(): JSX.Element {
   return (

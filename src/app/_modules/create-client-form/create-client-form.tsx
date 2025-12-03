@@ -1,11 +1,11 @@
-"use client";
-import { useEffect, useState, type ChangeEvent } from "react";
-import { useAdminAuthenticationContext } from "../../_auth/admin-authentication-provider";
-import useCreateClient from "../../_hooks/use-create-client";
-import * as Form from "@radix-ui/react-form";
-import type { CreateClientWithAdminDto } from "../../api/generated/model";
-import ClientFormFieldSection from "./client-form-field";
-import { AdminFormFieldSection } from "./admin-form-field";
+'use client';
+import { useEffect, useState, type ChangeEvent } from 'react';
+import { useAdminAuthenticationContext } from '../../_contexts/admin-authentication-provider';
+import useCreateClient from '../../_hooks/use-create-client';
+import * as Form from '@radix-ui/react-form';
+import type { CreateClientWithAdminDto } from '../../api/generated/model';
+import ClientFormFieldSection from './client-form-field';
+import { AdminFormFieldSection } from './admin-form-field';
 
 export type FormErrorMessageList = Array<[string, string]>;
 
@@ -15,7 +15,7 @@ export interface HandleInputBlurArgs<T> {
 }
 
 const KNOWN_ERROR: Record<string, string> = {
-  "409": "Account already exist",
+  '409': 'Account already exist',
 };
 
 function Errors(props: { errorCode: number | null }) {
@@ -24,7 +24,7 @@ function Errors(props: { errorCode: number | null }) {
     return null;
   }
 
-  const defaultMessage = "Something went wrong, please try again";
+  const defaultMessage = 'Something went wrong, please try again';
   let friendlyErrorMessage;
 
   const knowErrorCodes = Object.keys(KNOWN_ERROR);
@@ -65,7 +65,7 @@ export function CreateClientForm() {
 
     if (!isClientFormIsOk || !isAdminFormIsOk || !inputData) {
       console.log(
-        "no isClientFormIsOk, isAdminFormIsOk, inputData",
+        'no isClientFormIsOk, isAdminFormIsOk, inputData',
         isClientFormIsOk,
         isAdminFormIsOk,
         inputData,
@@ -81,7 +81,6 @@ export function CreateClientForm() {
       if (errorCode) {
         resetErrors();
       }
-      // eslint-disable-next-line react-hooks/exhaustive-deps -- only inputData should trigger it
     },
     [inputData],
   );

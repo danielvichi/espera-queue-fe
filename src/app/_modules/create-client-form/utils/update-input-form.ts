@@ -1,7 +1,7 @@
-import type { Dispatch, SetStateAction } from "react";
-import type { ValidationOptions } from "~/configs/create-client-input";
-import validateString from "~/utils/validateString";
-import addErrorToQueue from "./add-error-to-queue";
+import type { Dispatch, SetStateAction } from 'react';
+import type { ValidationOptions } from '~/configs/create-client-input';
+import validateString from '~/utils/validateString';
+import addErrorToQueue from './add-error-to-queue';
 
 interface UpdateInputDataArgs<InputGroupType> {
   data: string;
@@ -19,7 +19,7 @@ export function updateInputData<T>(
   const stringifiedDataField = String(dataField);
 
   const fieldValidationResult = validateString({
-    string: data || "",
+    string: data || '',
     options: {
       fieldName: stringifiedDataField,
       ...validationConfigObject,

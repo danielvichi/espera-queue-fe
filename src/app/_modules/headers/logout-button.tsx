@@ -1,5 +1,5 @@
 import type React from 'react';
-import { useAdminAuthenticationContext } from '~/app/_auth/admin-authentication-provider';
+import { useAdminAuthenticationContext } from '~/app/_contexts/admin-authentication-provider';
 import Button from '../button';
 
 export default function LogoutButton() {
@@ -11,9 +11,5 @@ export default function LogoutButton() {
     void adminLogout();
   }
 
-  return (
-    <Button onClick={handleClick} className="bg-white p-2 hover:font-bold">
-      Logout
-    </Button>
-  );
+  return <Button onClick={handleClick}>Logout</Button>;
 }

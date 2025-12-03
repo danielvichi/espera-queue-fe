@@ -1,9 +1,9 @@
 import * as Form from '@radix-ui/react-form';
 import { useEffect, useState, type ChangeEvent } from 'react';
 import Button from '~/app/_components/button';
-import type { FormErrorMessageList } from '~/app/_components/create-client-form/create-client-form';
-import FormError from '~/app/_components/create-client-form/form-error';
-import addErrorToQueue from '~/app/_components/create-client-form/utils/add-error-to-queue';
+import type { FormErrorMessageList } from '~/app/_modules/create-client-form/create-client-form';
+import FormError from '~/app/_modules/create-client-form/form-error';
+import addErrorToQueue from '~/app/_modules/create-client-form/utils/add-error-to-queue';
 import Input from '~/app/_components/input';
 import { VALIDATION_OPTIONS_FOR_ADMIN_LOGIN } from '~/configs/create-client-input';
 import validateString from '~/utils/validateString';
@@ -93,10 +93,14 @@ export default function LoginForm(props: LoginFormProps) {
     <Form.Root className="flex flex-col gap-4">
       <Form.Field name="email" className="flex flex-col gap-1">
         <div className="flex flex-row gap-2">
-          <Form.Label>Email</Form.Label>
+          <Form.Label className="w-full">Email</Form.Label>
 
           <Form.Control asChild>
-            <Input type="text" onBlur={handleEmailInputChange} />
+            <Input
+              disabled={props.isLoading}
+              type="text"
+              onBlur={handleEmailInputChange}
+            />
           </Form.Control>
         </div>
         <FormError errorType="email" errorList={formErrorMessageList} />
@@ -104,10 +108,14 @@ export default function LoginForm(props: LoginFormProps) {
 
       <Form.Field name="password" className="flex flex-col gap-1">
         <div className="flex flex-row gap-2">
-          <Form.Label>Password</Form.Label>
+          <Form.Label className="w-full">Password</Form.Label>
 
           <Form.Control asChild>
-            <Input type="text" onChange={handlePasswordInputChange} />
+            <Input
+              disabled={props.isLoading}
+              type="text"
+              onChange={handlePasswordInputChange}
+            />
           </Form.Control>
         </div>
         <FormError errorType="password" errorList={formErrorMessageList} />

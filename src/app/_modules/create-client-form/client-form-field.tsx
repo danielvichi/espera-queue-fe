@@ -16,7 +16,7 @@ import { VALIDATION_OPTIONS_FOR_CREATE_CLIENT } from '~/configs/create-client-in
 import { updateInputData } from './utils/update-input-form';
 import FormError from './form-error';
 import formatPhoneString from '~/utils/formatPhoneString';
-import Input from '../input';
+import Input from '../../_components/input';
 
 type CreateClientWithAdminDtoWithoutAdmin = Omit<
   CreateClientWithAdminDto,

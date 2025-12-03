@@ -11,7 +11,7 @@ import { type AxiosError, type AxiosResponse } from 'axios';
 import setUserFromJWT from '~/utils/setUserFromJWT';
 
 interface AdminAuthenticationContextType {
-  user: AdminWithClientDto | null;
+  user: AdminWithClientDto | null | undefined;
   setUser: (userState: AdminWithClientDto) => void;
   isLoading: boolean;
   errorMessage: string | null;
@@ -30,7 +30,9 @@ interface AdminAuthenticationProviderProps {
 function AdminAuthenticationProvider(
   props: AdminAuthenticationProviderProps,
 ): JSX.Element {
-  const [user, setUser] = useState<AdminWithClientDto | null>(null);
+  const [user, setUser] = useState<AdminWithClientDto | null | undefined>(
+    undefined,
+  );
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -56,7 +58,9 @@ function AdminAuthenticationProvider(
       onSuccess: (result) => {
         setUserFromJWT({
           jwt: result.data,
-          setUser: setUser,
+          setUser: setUser as React.Dispatch<
+            React.SetStateAction<AdminWithClientDto | null>
+          >,
         });
         setIsLoading(false);
       },

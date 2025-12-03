@@ -1,7 +1,7 @@
 'use client';
 import type { JSX } from 'react';
 import LogoutButton from './logout-button';
-import { useAdminAuthenticationContext } from '~/app/_auth/admin-authentication-provider';
+import { useAdminAuthenticationContext } from '~/app/_contexts/admin-authentication-provider';
 
 export function AdminHeader(): JSX.Element {
   const { user } = useAdminAuthenticationContext();

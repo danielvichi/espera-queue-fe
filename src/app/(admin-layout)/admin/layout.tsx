@@ -1,6 +1,6 @@
-import type { JSX } from "react";
-import AdminAuthenticationProvider from "~/app/_auth/admin-authentication-provider";
-import { AdminHeader } from "~/app/_components/headers/admin-header";
+import type { JSX } from 'react';
+import AdminAuthenticationProvider from '~/app/_contexts/admin-authentication-provider';
+import { AdminHeader } from '~/app/_modules/headers/admin-header';
 
 export default function AdminPageLayout({
   children,

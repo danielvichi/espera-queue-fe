@@ -2,10 +2,10 @@ import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { Slot } from '@radix-ui/react-slot';
 import { cn } from '~/utils/cn';
-import AnimatedLoadingIcon from './create-client-form/animated-loading-icon';
+import AnimatedLoadingIcon from '../_modules/create-client-form/animated-loading-icon';
 
 const buttonVariants = cva(
-  'inline-flex gap-2  justify-center items-center  border hover:bg-gray-300 hover:cursor-pointer disabled:pointer-events-none disabled:text-gray-500 disabled:border-gray-500 transition-colors',
+  'inline-flex gap-2  justify-center items-center  border  hover:bg-gray-300 hover:cursor-pointer disabled:pointer-events-none disabled:text-gray-500 disabled:border-gray-500 transition-colors',
   {
     variants: {
       variant: {},

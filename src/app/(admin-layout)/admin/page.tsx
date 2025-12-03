@@ -1,18 +1,43 @@
-"use client";
-import { useAdminAuthenticationContext } from "~/app/_auth/admin-authentication-provider";
-import { CreateClientForm } from "~/app/_components/create-client-form/create-client-form";
+'use client';
+import { useEffect, useState } from 'react';
+import { useAdminAuthenticationContext } from '~/app/_contexts/admin-authentication-provider';
+import AnimatedLoadingIcon from '~/app/_modules/create-client-form/animated-loading-icon';
+import PageWrapperLayout from '~/app/_modules/headers/page-wrapper-layout';
+import LoginModule from '~/app/_modules/login/login';
 
-export default function AdminHome() {
-  const { user } = useAdminAuthenticationContext();
-
-  console.log(user);
-
+function LoadingPageState() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center">
-      <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
-        Create Business Account
-        {user?.id ? "CREATED" : <CreateClientForm />}
-      </div>
-    </main>
+    <PageWrapperLayout>
+      <AnimatedLoadingIcon size="large" />
+    </PageWrapperLayout>
   );
+}
+
+function LoadedPageState() {
+  const { user } = useAdminAuthenticationContext();
+  return (
+    <PageWrapperLayout>
+      {user?.id ? 'DASHBOARD' : <LoginModule />}
+    </PageWrapperLayout>
+  );
+}
+
+export default function AdminDashboardPage() {
+  const { user, isLoading } = useAdminAuthenticationContext();
+  const [isFirstLoad, setIsFirstLoad] = useState(true);
+
+  useEffect(
+    function checkFirstAdminDashboardPageLoadEffect() {
+      if (!isLoading && user !== undefined) {
+        setIsFirstLoad(false);
+      }
+    },
+    [user, isLoading],
+  );
+
+  if (isFirstLoad) {
+    return <LoadingPageState />;
+  }
+
+  return <LoadedPageState />;
 }
