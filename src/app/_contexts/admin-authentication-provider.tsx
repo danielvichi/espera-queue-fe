@@ -1,5 +1,11 @@
 'use client';
-import { createContext, useContext, useState, type JSX } from 'react';
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  type JSX,
+} from 'react';
 import type { AdminWithClientDto, SignInDto } from '../api/generated/model';
 import {
   authControllerCheckAdminCredentials,
@@ -9,6 +15,7 @@ import {
 import { jwtDecode } from 'jwt-decode';
 import { type AxiosError, type AxiosResponse } from 'axios';
 import setUserFromJWT from '~/utils/setUserFromJWT';
+import { useClientDataContext } from './client-data-provider';
 
 interface AdminAuthenticationContextType {
   user: AdminWithClientDto | null | undefined;
@@ -35,6 +42,8 @@ function AdminAuthenticationProvider(
   );
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const { client, setClient } = useClientDataContext();
 
   /**
    * Determine when to run the credentials verification check on mount and on user login
@@ -127,6 +136,18 @@ function AdminAuthenticationProvider(
 
   const isLoadingOrValidating =
     isLoading || isVerifyLoading || isVerifyValidating;
+
+  useEffect(
+    function updateClientOnAdminChange() {
+      if (!user) {
+        setClient(null);
+        return;
+      }
+
+      setClient(user.client);
+    },
+    [user],
+  );
 
   return (
     <AdminAuthenticationContext.Provider
