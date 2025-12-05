@@ -24,9 +24,9 @@ export function CardCarrouselContainer(props: CardCarrouselContainerProps) {
   getTotalChildrenAmount?.(childrenAmount);
 
   return (
-    <div className="relative min-h-[270px] md:min-h-[200px] flex flex-row gap-4 overflow-hidden max-w-4xl">
+    <div className="relative gap-4 overflow-hidden max-w-4xl">
       <div
-        className="absolute flex flex-row min-h-[230px] h-full"
+        className="flex flex-row w-[200%] h-full"
         style={{
           width: `${childrenAmount * 100}%`,
           transform: `translateX(-${(activeIndex ?? 0) * (100 / childrenAmount)}%)`,
