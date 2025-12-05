@@ -65,9 +65,7 @@ function AdminAuthenticationProvider(
         setIsLoading(false);
       },
       onError: (error: AxiosError) => {
-        if (user) {
-          setUser(null);
-        }
+        setUser(null);
         setIsLoading(false);
         console.log('Unauthorized', error.message);
       },

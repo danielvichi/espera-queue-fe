@@ -6,7 +6,7 @@ export default function LoginModule() {
   const { isLoading, adminLogin } = useAdminAuthenticationContext();
 
   return (
-    <div className="flex flex-col gap-4 justify-center border-l px-8">
+    <div className="flex flex-col gap-4 justify-center">
       <h2>Login</h2>
       <LoginForm onSubmit={adminLogin} isLoading={isLoading} />
     </div>
