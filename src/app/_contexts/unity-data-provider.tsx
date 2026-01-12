@@ -7,46 +7,32 @@ import {
   useState,
   type JSX,
 } from 'react';
-import type { ClientDto, QueueDto, UnityDto } from '../api/generated/model';
+import type { UnityDto } from '../api/generated/model';
 import { unityControllerGetAllUnities } from '../api/generated/unity/unity';
 import type { AxiosError } from 'axios';
+import { useAdminAuthenticationContext } from './admin-authentication-provider';
 
-interface AdminAuthenticationContextType {
-  client: ClientDto | null | undefined;
-  setClient: (userState: ClientDto | null) => void;
+interface UnityDataProviderType {
   unitiesData: UnityDto[] | null | undefined;
-  queuesData: QueueDto[] | null | undefined;
   isLoading: boolean;
   errorMessage: string | null;
-  refreshClientData: () => Promise<void>;
+  refreshUnityData: () => Promise<void>;
 }
 
-const AdminAuthenticationContext =
-  createContext<AdminAuthenticationContextType | null>(null);
+const UnityDataContext = createContext<UnityDataProviderType | null>(null);
 
-interface ClientDataProviderProps {
+interface UnityDataProviderProps {
   children: React.ReactNode;
 }
 
-function ClientDataProvider(props: ClientDataProviderProps): JSX.Element {
-  const [client, setClient] = useState<ClientDto | null | undefined>(undefined);
+function UnityDataProvider(props: UnityDataProviderProps): JSX.Element {
   const [unitiesData, setUnitiesData] = useState<UnityDto[] | null | undefined>(
-    undefined,
-  );
-  const [queuesData, setQueuesData] = useState<QueueDto[] | null | undefined>(
     undefined,
   );
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const fetchClientData = useCallback(() => {
-    if (isLoading) {
-      setIsLoading(true);
-    }
-
-    // TODO make it fetch for connected client's data
-    // clientControllerGetClientById();
-  }, [isLoading]);
+  const { user } = useAdminAuthenticationContext();
 
   const fetchUnitiesForConnectedAdmin = useCallback(() => {
     if (!isLoading) {
@@ -70,13 +56,13 @@ function ClientDataProvider(props: ClientDataProviderProps): JSX.Element {
       });
   }, [isLoading]);
 
-  async function refreshClientData() {
+  async function refreshUnityData() {
     return fetchUnitiesForConnectedAdmin();
   }
 
   useEffect(
     function fetchDataOnMount() {
-      if (!client) {
+      if (!user?.client) {
         return;
       }
 
@@ -84,42 +70,33 @@ function ClientDataProvider(props: ClientDataProviderProps): JSX.Element {
         fetchUnitiesForConnectedAdmin();
       }
     },
-    [
-      client,
-      unitiesData,
-      isLoading,
-      fetchClientData,
-      fetchUnitiesForConnectedAdmin,
-    ],
+    [user, unitiesData, isLoading, fetchUnitiesForConnectedAdmin],
   );
 
   return (
-    <AdminAuthenticationContext.Provider
+    <UnityDataContext.Provider
       value={{
-        client,
-        setClient,
         unitiesData,
-        queuesData,
-        refreshClientData,
+        refreshUnityData,
         isLoading: isLoading,
         errorMessage,
       }}
     >
       {props.children}
-    </AdminAuthenticationContext.Provider>
+    </UnityDataContext.Provider>
   );
 }
 
-export const useClientDataContext = (): AdminAuthenticationContextType => {
-  const context = useContext(AdminAuthenticationContext);
+export const useUnitiesDataContext = (): UnityDataProviderType => {
+  const context = useContext(UnityDataContext);
 
   if (!context) {
     throw new Error(
-      'useClientDataContext must be used within a ClientDataProvider',
+      'useUnitiesDataContext must be used within a UnityDataProvider',
     );
   }
 
   return context;
 };
 
-export default ClientDataProvider;
+export default UnityDataProvider;

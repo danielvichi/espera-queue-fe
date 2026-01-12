@@ -20,11 +20,10 @@ const inputVariants = cva('border disabled:bg-gray-300', {
 export type InputProps = React.InputHTMLAttributes<HTMLInputElement> &
   VariantProps<typeof inputVariants> & {
     asChild?: boolean;
-    isLoading?: boolean;
   };
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
-  const { className, children, asChild = false, isLoading, ...rest } = props;
+  const { className, asChild = false, ...rest } = props;
   const Comp = asChild ? Slot : 'input';
 
   return (

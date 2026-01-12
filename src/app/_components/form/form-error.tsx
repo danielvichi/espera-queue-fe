@@ -1,5 +1,6 @@
 import * as Form from '@radix-ui/react-form';
-import type { FormErrorMessageList } from '../create-client-form';
+
+export type FormErrorMessageList = Array<[string, string]>;
 
 interface FormErrorProps {
   errorType: string;
@@ -16,7 +17,7 @@ export default function FormError(props: FormErrorProps) {
   for (const error of errorList) {
     if (error[0] === errorType) {
       return (
-        <Form.Message className="text-[10pt] first-letter:capitalize">
+        <Form.Message className="pl-0 md:pl-[170px] text-[10pt] first-letter:capitalize">
           {`${error[1]}`}
         </Form.Message>
       );

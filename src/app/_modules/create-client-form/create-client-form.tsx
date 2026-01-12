@@ -1,21 +1,17 @@
 'use client';
-import { useEffect, useState, type ChangeEvent } from 'react';
-import { useAdminAuthenticationContext } from '../../_contexts/admin-authentication-provider';
-import useCreateClient from '../../_hooks/use-create-client';
+import { useEffect, useState } from 'react';
+import { useAdminAuthenticationContext } from '~/app/_contexts/admin-authentication-provider';
+import useCreateClient from '~/app/_hooks/use-create-client';
 import * as Form from '@radix-ui/react-form';
-import type { CreateClientWithAdminDto } from '../../api/generated/model';
+import type { CreateClientWithAdminDto } from '~/app/api/generated/model';
 import ClientFormFieldSection from './client-form-field';
 import { AdminFormFieldSection } from './admin-form-field';
 import Button from '~/app/_components/button';
-import { CardCarrouselContainer, CardContainer } from './components/carrousel';
-import StepsBreadCrumbs from './components/steps-bread-crumb';
-
-export type FormErrorMessageList = Array<[string, string]>;
-
-export interface HandleInputBlurArgs<T> {
-  event: ChangeEvent<HTMLInputElement>;
-  field: keyof T;
-}
+import {
+  CardCarrouselContainer,
+  CardContainer,
+} from '~/app/_components/carrousel';
+import StepsBreadCrumbs from '~/app/_components/steps-bread-crumb';
 
 const KNOWN_ERROR: Record<string, string> = {
   '409': 'Account already exist',
@@ -100,6 +96,10 @@ export function CreateClientForm() {
       <StepsBreadCrumbs
         activeStepIndex={activeStepIndex}
         steps={['Business', 'Admin']}
+        stepsOk={[
+          isClientFormIsOk ? 'Business' : '',
+          isAdminFormIsOk ? 'Admin' : '',
+        ]}
         setActiveStepIndex={setStep}
       />
       <Form.Root>

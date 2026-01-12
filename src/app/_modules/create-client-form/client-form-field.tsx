@@ -5,20 +5,22 @@ import {
   useRef,
   useState,
   type Dispatch,
+  type RefObject,
   type SetStateAction,
 } from 'react';
-import type {
-  FormErrorMessageList,
-  HandleInputBlurArgs,
-} from './create-client-form';
 import type { CreateClientWithAdminDto } from '~/app/api/generated/model';
 import { VALIDATION_OPTIONS_FOR_CREATE_CLIENT } from '~/configs/create-client-input';
-import { updateInputData } from './utils/update-input-form';
-import FormError from './components/form-error';
-import formatPhoneString from '~/utils/formatPhoneString';
-import Input from '../../_components/input';
-import StyledFormLabel from './components/styled-form-label';
-import StyledFormWrapper from './components/style-form-wrapper';
+import { updateInputData } from '~/utils/form/update-input-form';
+import FormError, {
+  type FormErrorMessageList,
+} from '~/app/_components/form/form-error';
+import formatPhoneString, {
+  handlePhoneChange,
+} from '~/utils/formatPhoneString';
+import Input from '~/app/_components/input';
+import StyledFormLabel from '~/app/_components/form/styled-form-label';
+import StyledFormWrapper from '~/app/_components/form/style-form-wrapper';
+import type { HandleInputChangeArgs } from '../create-unity-form/create-unity-form';
 
 type CreateClientWithAdminDtoWithoutAdmin = Omit<
   CreateClientWithAdminDto,
@@ -40,7 +42,7 @@ export default function ClientFormFieldSection(
 
   const phoneInputRef = useRef<HTMLInputElement>(null);
 
-  const checkRequiredFieldsOnBlur = useCallback(() => {
+  const checkRequiredFieldsOnDataChange = useCallback(() => {
     if (!props.inputData?.name) {
       props.onIsRequiredFieldsFailed?.();
       return;
@@ -58,25 +60,14 @@ export default function ClientFormFieldSection(
     props.onIsRequiredFieldsOk?.();
   }, [props, clientFormErrorMessageList]);
 
-  function handlePhoneChange(string: string) {
-    if (!phoneInputRef.current) {
-      return '';
-    }
-    const formattedValue = formatPhoneString(string);
-
-    phoneInputRef.current.value = formattedValue;
-
-    return formattedValue ?? '';
-  }
-
-  function updateClientInputFields({
+  function updateClientInputField({
     event,
     field,
-  }: HandleInputBlurArgs<CreateClientWithAdminDtoWithoutAdmin>) {
+  }: HandleInputChangeArgs<CreateClientWithAdminDtoWithoutAdmin>) {
     let value = event.target.value;
 
     if (field === 'phone') {
-      value = handlePhoneChange(value);
+      value = handlePhoneChange(value, phoneInputRef);
     }
 
     const validatedData = updateInputData<CreateClientWithAdminDtoWithoutAdmin>(
@@ -90,10 +81,6 @@ export default function ClientFormFieldSection(
         ) => void,
       },
     );
-
-    if (field === 'phone') {
-      console.log('validatedData', validatedData);
-    }
 
     if (!validatedData) {
       return;
@@ -124,9 +111,9 @@ export default function ClientFormFieldSection(
 
   useEffect(
     function checkClientInputDataEffect() {
-      checkRequiredFieldsOnBlur();
+      checkRequiredFieldsOnDataChange();
     },
-    [props.inputData, checkRequiredFieldsOnBlur],
+    [props.inputData, checkRequiredFieldsOnDataChange],
   );
 
   return (
@@ -141,7 +128,7 @@ export default function ClientFormFieldSection(
                 type="text"
                 className="flex w-full"
                 onChange={(event) =>
-                  updateClientInputFields({ event, field: 'name' })
+                  updateClientInputField({ event, field: 'name' })
                 }
                 required
               />
@@ -161,7 +148,7 @@ export default function ClientFormFieldSection(
                 type="text"
                 className="flex w-full"
                 onChange={(event) =>
-                  updateClientInputFields({ event, field: 'cnpj' })
+                  updateClientInputField({ event, field: 'cnpj' })
                 }
               />
             </Form.Control>
@@ -180,7 +167,7 @@ export default function ClientFormFieldSection(
                 type="text"
                 className="flex w-full"
                 onChange={(event) =>
-                  updateClientInputFields({ event, field: 'address' })
+                  updateClientInputField({ event, field: 'address' })
                 }
               />
             </Form.Control>
@@ -200,7 +187,7 @@ export default function ClientFormFieldSection(
                 className="flex w-full"
                 ref={phoneInputRef}
                 onChange={(event) =>
-                  updateClientInputFields({ event, field: 'phone' })
+                  updateClientInputField({ event, field: 'phone' })
                 }
               />
             </Form.Control>

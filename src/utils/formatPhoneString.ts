@@ -1,9 +1,11 @@
+import type { RefObject } from 'react';
+
 export default function formatPhoneString(string: string) {
   // Remove all non-digit characters
-  const digits = string.replace(/\D/g, "");
+  const digits = string.replace(/\D/g, '');
 
   if (digits.length <= 0) {
-    return "";
+    return '';
   }
 
   const areaCode = digits.substring(0, 2);
@@ -12,5 +14,19 @@ export default function formatPhoneString(string: string) {
 
   const formattedSecondPart = `-${secondPart}`;
 
-  return `(${areaCode})${firstPart}${secondPart ? formattedSecondPart : ""}`;
+  return `(${areaCode})${firstPart}${secondPart ? formattedSecondPart : ''}`;
+}
+
+export function handlePhoneChange(
+  string: string,
+  inputRef: RefObject<HTMLInputElement | null>,
+) {
+  if (!inputRef.current) {
+    return '';
+  }
+  const formattedValue = formatPhoneString(string);
+
+  inputRef.current.value = formattedValue;
+
+  return formattedValue ?? '';
 }

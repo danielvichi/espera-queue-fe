@@ -1,6 +1,6 @@
 import type { JSX } from 'react';
 import AdminAuthenticationProvider from '~/app/_contexts/admin-authentication-provider';
-import ClientDataProvider from '~/app/_contexts/client-data-provider';
+import UnityDataProvider from '~/app/_contexts/unity-data-provider';
 import { AdminHeader } from '~/app/_modules/headers/admin-header';
 
 export default function AdminPageLayout({
@@ -9,13 +9,13 @@ export default function AdminPageLayout({
   children: React.ReactNode;
 }>): JSX.Element {
   return (
-    <ClientDataProvider>
-      <AdminAuthenticationProvider>
+    <AdminAuthenticationProvider>
+      <UnityDataProvider>
         <>
           <AdminHeader />
           {children}
         </>
-      </AdminAuthenticationProvider>
-    </ClientDataProvider>
+      </UnityDataProvider>
+    </AdminAuthenticationProvider>
   );
 }
