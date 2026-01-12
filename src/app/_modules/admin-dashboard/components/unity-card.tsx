@@ -1,8 +1,13 @@
+import Link from 'next/link';
 import Card from '~/app/_components/card';
 import type { UnityDto } from '~/app/api/generated/model';
 
 export function AddUnityCard() {
-  return <Card>Add Unity Card Component</Card>;
+  return (
+    <Link href={'admin/create/unity'}>
+      <Card> Add Unity </Card>
+    </Link>
+  );
 }
 
 interface UnityCardProps {

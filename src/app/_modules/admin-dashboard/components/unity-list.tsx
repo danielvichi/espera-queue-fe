@@ -20,5 +20,11 @@ export default function UnityList(props: UnityListProps) {
     <UnityCard key={unity.id} unityData={unity} />
   ));
 
-  return <div>{cardList}</div>;
+  return (
+    <div>
+      <h2> Unities</h2>
+      {cardList}
+      <AddUnityCard />
+    </div>
+  );
 }
