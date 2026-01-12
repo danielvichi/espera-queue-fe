@@ -27,24 +27,32 @@ export default function AdminDashboardPage() {
   const [isFirstLoad, setIsFirstLoad] = useState(true);
 
   const router = useRouter();
+  const isAdminAuthenticated = Boolean(user?.id);
 
   useEffect(
     function checkFirstAdminDashboardPageLoadEffect() {
       if (!isLoading && user !== undefined) {
         setIsFirstLoad(false);
       }
-    },
-    [user, isLoading],
-  );
 
-  const isAdminAuthenticated = Boolean(user?.id);
+      if (!isAdminAuthenticated) {
+        void router.push('/admin/login');
+      }
+    },
+    [user, isLoading, isAdminAuthenticated, router],
+  );
 
   if (isFirstLoad) {
     return <LoadingPageState />;
   }
 
   if (!isAdminAuthenticated) {
-    void router.push('/admin/login');
+    return null;
+  }
+
+  if (typeof window !== 'undefined' && !isAdminAuthenticated) {
+    router.push('/admin/login');
+    return null;
   }
 
   return <LoadedPageState />;

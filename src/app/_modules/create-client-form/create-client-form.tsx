@@ -166,7 +166,7 @@ export function CreateClientForm() {
             isCreatingAccount ||
             !!errorCode
           }
-          onClick={(e) => handleSubmit(e)}
+          onClick={handleSubmit}
           style={{
             display: activeStepIndex >= 1 ? 'block' : 'none',
           }}
