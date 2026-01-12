@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useAdminAuthenticationContext } from '~/app/_contexts/admin-authentication-provider';
 import AdminDashboard from '~/app/_modules/admin-dashboard/admin-dashboard';
-import AnimatedLoadingIcon from '~/app/_modules/create-client-form/animated-loading-icon';
+import AnimatedLoadingIcon from '~/app/_components/animated-loading-icon';
 import PageWrapperLayout from '~/app/_modules/headers/page-wrapper-layout';
 
 function LoadingPageState() {
@@ -42,16 +42,17 @@ export default function AdminDashboardPage() {
     [user, isLoading, isAdminAuthenticated, router],
   );
 
+  useEffect(() => {
+    if (!isAdminAuthenticated) {
+      void router.push('/admin/login');
+    }
+  }, [isAdminAuthenticated, router]);
+
   if (isFirstLoad) {
     return <LoadingPageState />;
   }
 
   if (!isAdminAuthenticated) {
-    return null;
-  }
-
-  if (typeof window !== 'undefined' && !isAdminAuthenticated) {
-    router.push('/admin/login');
     return null;
   }
 
