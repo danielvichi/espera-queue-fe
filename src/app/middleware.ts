@@ -8,23 +8,23 @@
  *
  */
 
-import { type NextRequest, NextResponse } from "next/server";
-import { generateCSP } from "./configs/csp";
+import { type NextRequest, NextResponse } from 'next/server';
+import { generateCSP } from '~/configs/csp';
 
 export function middleware(request: NextRequest): NextResponse {
   const requestHeaders = new Headers(request.headers);
 
   const { csp, nonce } = generateCSP();
 
-  requestHeaders.set("x-nonce", nonce);
-  requestHeaders.set("Content-Security-Policy", csp);
+  requestHeaders.set('x-nonce', nonce);
+  requestHeaders.set('Content-Security-Policy', csp);
 
   const response = NextResponse.next({
     request: {
       headers: requestHeaders,
     },
   });
-  response.headers.set("Content-Security-Policy", csp);
+  response.headers.set('Content-Security-Policy', csp);
 
   return response;
 }
@@ -39,10 +39,10 @@ export const config = {
      * - favicon.ico (favicon file)
      */
     {
-      source: "/((?!api|_next/static|_next/image|favicon.ico).*)",
+      source: '/((?!api|_next/static|_next/image|favicon.ico).*)',
       missing: [
-        { type: "header", key: "next-router-prefetch" },
-        { type: "header", key: "purpose", value: "prefetch" },
+        { type: 'header', key: 'next-router-prefetch' },
+        { type: 'header', key: 'purpose', value: 'prefetch' },
       ],
     },
   ],

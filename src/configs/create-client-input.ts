@@ -1,19 +1,18 @@
-import type { CreateClientWithAdminDto } from "~/app/api/generated/model";
-import type { ValidateOptions } from "~/utils/validateString";
+import type { CreateClientWithAdminDto } from '~/app/api/generated/model';
+import type { ValidateOptions } from '~/utils/validateString';
+import { EMAIL_PATTERN_REGEX, PHONE_PATTERN_REGEX } from './regex';
 
 const MAX_NAME_CHAR_LENGTH = 254;
 
 export type ValidationOptions<Type> = Record<
   keyof Type,
-  Omit<ValidateOptions, "fieldName">
+  Omit<ValidateOptions, 'fieldName'>
 >;
 
 type CreateClientWithAdminDtoWithoutAdmin = Omit<
   CreateClientWithAdminDto,
-  "admin"
+  'admin'
 >;
-
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export const VALIDATION_OPTIONS_FOR_CREATE_CLIENT: ValidationOptions<CreateClientWithAdminDtoWithoutAdmin> =
   {
@@ -39,13 +38,13 @@ export const VALIDATION_OPTIONS_FOR_CREATE_CLIENT: ValidationOptions<CreateClien
       minLength: 10,
       maxLength: 14,
       required: false,
-      pattern: /^\(\d{2}\)\d{5}-\d{4}$/,
+      pattern: PHONE_PATTERN_REGEX,
     },
   };
 
 type CreateClientAdminWithoutPassword = Omit<
-  CreateClientWithAdminDto["admin"],
-  "passwordHash"
+  CreateClientWithAdminDto['admin'],
+  'passwordHash'
 >;
 
 export const VALIDATION_OPTIONS_FOR_CREATE_CLIENT_ADMIN: ValidationOptions<CreateClientAdminWithoutPassword> =
@@ -55,7 +54,7 @@ export const VALIDATION_OPTIONS_FOR_CREATE_CLIENT_ADMIN: ValidationOptions<Creat
       minLength: 6,
       maxLength: 254,
       required: true,
-      pattern: EMAIL_PATTERN,
+      pattern: EMAIL_PATTERN_REGEX,
     },
     name: {
       allowSpecialChars: false,
@@ -73,6 +72,6 @@ export const VALIDATION_OPTIONS_FOR_ADMIN_LOGIN: ValidationOptions<{
     minLength: 6,
     maxLength: 254,
     required: true,
-    pattern: EMAIL_PATTERN,
+    pattern: EMAIL_PATTERN_REGEX,
   },
 };
