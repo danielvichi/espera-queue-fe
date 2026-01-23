@@ -17,16 +17,8 @@ export default function formatPhoneString(string: string) {
   return `(${areaCode})${firstPart}${secondPart ? formattedSecondPart : ''}`;
 }
 
-export function handlePhoneChange(
-  string: string,
-  inputRef: RefObject<HTMLInputElement | null>,
-) {
-  if (!inputRef.current) {
-    return '';
-  }
+export function handlePhoneChange(string: string) {
   const formattedValue = formatPhoneString(string);
-
-  inputRef.current.value = formattedValue;
 
   return formattedValue ?? '';
 }

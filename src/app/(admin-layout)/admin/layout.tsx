@@ -1,5 +1,6 @@
 import type { JSX } from 'react';
 import AdminAuthenticationProvider from '~/app/_contexts/admin-authentication-provider';
+import QueueDataProvider from '~/app/_contexts/queue-data-provider';
 import UnityDataProvider from '~/app/_contexts/unity-data-provider';
 import { AdminHeader } from '~/app/_modules/headers/admin-header';
 
@@ -11,10 +12,12 @@ export default function AdminPageLayout({
   return (
     <AdminAuthenticationProvider>
       <UnityDataProvider>
-        <>
-          <AdminHeader />
-          {children}
-        </>
+        <QueueDataProvider>
+          <>
+            <AdminHeader />
+            {children}
+          </>
+        </QueueDataProvider>
       </UnityDataProvider>
     </AdminAuthenticationProvider>
   );

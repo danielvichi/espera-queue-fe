@@ -4,7 +4,7 @@ import validateString from '~/utils/validateString';
 import addErrorToQueue from './add-error-to-queue';
 
 interface UpdateInputDataArgs<InputGroupType> {
-  data: string;
+  data: string | number;
   dataField: keyof InputGroupType;
   validationConfigObject: ValidationOptions<InputGroupType>[keyof InputGroupType];
   errorList: Array<[string, string]>;
@@ -13,13 +13,13 @@ interface UpdateInputDataArgs<InputGroupType> {
 
 export function updateInputData<T>(
   args: UpdateInputDataArgs<T>,
-): string | null {
+): string | number | null {
   const { data, dataField, validationConfigObject, errorList, onError } = args;
 
   const stringifiedDataField = String(dataField);
 
   const fieldValidationResult = validateString({
-    string: data || '',
+    value: data || '',
     options: {
       fieldName: stringifiedDataField,
       ...validationConfigObject,

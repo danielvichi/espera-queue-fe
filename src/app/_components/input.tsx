@@ -3,7 +3,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { Slot } from '@radix-ui/react-slot';
 import { cn } from '~/utils/cn';
 
-const inputVariants = cva('border disabled:bg-gray-300', {
+export const inputVariants = cva('border disabled:bg-gray-300', {
   variants: {
     variant: {},
     size: {

@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { type CreateUnityDto } from '../api/generated/model';
-import { unityControllerCreateUnity } from '../api/generated/unity/unity';
+import {
+  unityControllerCreateUnity,
+  unityControllerDeleteUnity,
+} from '../api/generated/unity/unity';
 import type { AxiosError } from 'axios';
 import type { CreateUnityWithoutClientIdDto } from '../_modules/create-unity-form/unity-form-field';
 
@@ -23,7 +26,30 @@ export function useCreateUnity() {
         const unityData = response.data;
         console.log('unityData', unityData);
         setInputData(unityData);
+
+        return response;
       })
+      .catch((error: AxiosError) => {
+        console.error(error);
+
+        if (error.status) {
+          setErrorCode(error.status);
+        } else {
+          setErrorCode(0);
+        }
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }
+
+  async function deleteUnity(unityId: string) {
+    setIsLoading(true);
+
+    return await unityControllerDeleteUnity(
+      { unityId: unityId },
+      { withCredentials: true },
+    )
       .catch((error: AxiosError) => {
         console.error(error);
 
@@ -52,5 +78,6 @@ export function useCreateUnity() {
     errorCode,
     resetErrors,
     createUnity,
+    deleteUnity,
   };
 }

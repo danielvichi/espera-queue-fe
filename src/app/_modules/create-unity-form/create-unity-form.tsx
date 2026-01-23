@@ -8,9 +8,14 @@ import StepsBreadCrumbs from '~/app/_components/steps-bread-crumb';
 import { useCreateUnity } from '~/app/_hooks/use-create-unity';
 import { UnityFormField } from './unity-form-field';
 import Button from '~/app/_components/button';
+import { QueueFormField } from './queue-form-field';
+import { useCreateQueue } from '~/app/_hooks/use-create-queue';
+import { useAdminAuthenticationContext } from '~/app/_contexts/admin-authentication-provider';
+import { useUnitiesDataContext } from '~/app/_contexts/unity-data-provider';
+import { useRouter } from 'next/navigation';
 
 export interface HandleInputChangeArgs<T> {
-  event: ChangeEvent<HTMLInputElement>;
+  event: ChangeEvent<HTMLInputElement | HTMLSelectElement>;
   field: keyof T;
 }
 
@@ -19,20 +24,63 @@ export function CreateUnityForm() {
   const [isUnityFormIsOk, setIsUnityFormOk] = useState<boolean>(false);
   const [isQueueFormIsOk, setIsQueueFormOk] = useState<boolean>(false);
 
+  const { user } = useAdminAuthenticationContext();
+  const { refreshUnityData, isLoading: isUnityDataContextLoading } =
+    useUnitiesDataContext();
+
+  const router = useRouter();
+
   const {
     inputData: unityInputData,
     setInputData: setUnityInputData,
     createUnity,
+    deleteUnity,
     isLoading: isCreatingUnityLoading,
     errorCode: unityErrorCode,
   } = useCreateUnity();
+
+  const {
+    inputData: queueInputData,
+    setInputData: setQueueInputData,
+    createQueue,
+    isLoading: isCreatingQueueLoading,
+    errorCode: queueErrorCode,
+  } = useCreateQueue();
 
   function setStep(index: number) {
     setActiveStepIndex(index);
   }
 
-  function handleSubmit(event: React.MouseEvent<HTMLButtonElement>) {
+  async function handleSubmit(event: React.MouseEvent<HTMLButtonElement>) {
     event.preventDefault();
+
+    if (!unityInputData || !queueInputData || !user?.clientId) {
+      return;
+    }
+
+    await createUnity({
+      clientId: user.clientId,
+      ...unityInputData,
+    }).then(async (response) => {
+      if (!response) {
+        return;
+      }
+
+      const queueResponse = await createQueue({
+        ...queueInputData,
+        adminId: user.id,
+        unityId: response.data.id,
+      });
+
+      if (queueResponse && queueResponse.data) {
+        await refreshUnityData();
+
+        router.push('/admin/');
+      } else {
+        // If queue creation failed, delete the previously created unity to maintain data consistency
+        await deleteUnity(response.data.id);
+      }
+    });
   }
 
   return (
@@ -57,7 +105,14 @@ export function CreateUnityForm() {
               onIsRequiredFieldsFailed={() => setIsUnityFormOk(false)}
             />
           </CardContainer>
-          <CardContainer>b</CardContainer>
+          <CardContainer>
+            <QueueFormField
+              inputData={queueInputData}
+              updateInputData={setQueueInputData}
+              onIsRequiredFieldsOk={() => setIsQueueFormOk(true)}
+              onIsRequiredFieldsFailed={() => setIsQueueFormOk(false)}
+            />
+          </CardContainer>
         </CardCarrouselContainer>
       </Form.Root>
       <div className="flex w-full justify-center gap-4">
@@ -92,8 +147,13 @@ export function CreateUnityForm() {
           disabled={
             !isUnityFormIsOk ||
             !isQueueFormIsOk ||
+            !!unityErrorCode ||
+            !!queueErrorCode
+          }
+          isLoading={
             isCreatingUnityLoading ||
-            !!unityErrorCode
+            isCreatingQueueLoading ||
+            isUnityDataContextLoading
           }
           onClick={(e) => handleSubmit(e)}
           style={{

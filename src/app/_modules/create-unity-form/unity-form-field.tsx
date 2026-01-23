@@ -59,7 +59,9 @@ export function UnityFormField(props: UnityFormFieldSectionProps) {
     let value = event.target.value;
 
     if (field === 'phone') {
-      value = handlePhoneChange(value, phoneInputRef);
+      value = handlePhoneChange(value);
+
+      phoneInputRef.current!.value = value;
     }
 
     const validatedData = updateInputData<CreateUnityWithoutClientIdDto>({
