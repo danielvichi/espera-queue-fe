@@ -1,13 +1,14 @@
 import * as Form from '@radix-ui/react-form';
 import { useRef, useState } from 'react';
-import type { FormErrorMessageList } from '../create-client-form';
 import validatePassword from '~/utils/validatePassword';
 import addErrorToQueue, {
   removeAllFieldError,
-} from '../utils/add-error-to-queue';
-import FormError from './form-error';
-import StyledFormLabel from './styled-form-label';
-import StyledFormWrapper from './style-form-wrapper';
+} from '~/utils/form/add-error-to-queue';
+import FormError, {
+  type FormErrorMessageList,
+} from '~/app/_components/form/form-error';
+import StyledFormLabel from '~/app/_components/form/styled-form-label';
+import StyledFormWrapper from '~/app/_components/form/style-form-wrapper';
 import Input from '~/app/_components/input';
 
 interface PasswordInputFormProps {

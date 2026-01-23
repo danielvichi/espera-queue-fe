@@ -9,7 +9,7 @@ export interface ValidateOptions {
 }
 
 interface ValidateArgs {
-  string: string;
+  value: string | number;
   options?: ValidateOptions;
 }
 
@@ -19,7 +19,7 @@ interface ValidateResult {
 }
 
 const validateString = (data: ValidateArgs): ValidateResult => {
-  const { string, options } = data;
+  const { value, options } = data;
 
   const {
     fieldName,
@@ -31,11 +31,17 @@ const validateString = (data: ValidateArgs): ValidateResult => {
     customFailMessage,
   } = options ?? {};
 
+  let parsedValue = value;
+
+  if (typeof value === 'number') {
+    parsedValue = value.toString();
+  }
+
   // Convert value to string for length checks
-  const stringValue = String(string).trim();
+  const stringValue = String(parsedValue).trim();
 
   // Check if required field is empty
-  if (required && stringValue === "") {
+  if (required && stringValue === '') {
     return {
       isValid: false,
       message: customFailMessage ?? `${fieldName} is required`,
@@ -43,10 +49,10 @@ const validateString = (data: ValidateArgs): ValidateResult => {
   }
 
   // Escape validation if is not required and it is empty
-  if (!required && stringValue === "") {
+  if (!required && stringValue === '') {
     return {
       isValid: true,
-      message: "",
+      message: '',
     };
   }
 
@@ -87,7 +93,7 @@ const validateString = (data: ValidateArgs): ValidateResult => {
     };
   }
 
-  return { isValid: true, message: "" };
+  return { isValid: true, message: '' };
 };
 
 export default validateString;

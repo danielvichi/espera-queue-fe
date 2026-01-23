@@ -1,8 +1,8 @@
 'use client';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useAdminAuthenticationContext } from '~/app/_contexts/admin-authentication-provider';
-import AnimatedLoadingIcon from '~/app/_modules/create-client-form/animated-loading-icon';
+import AnimatedLoadingIcon from '~/app/_components/animated-loading-icon';
 import PageWrapperLayout from '~/app/_modules/headers/page-wrapper-layout';
 import LoginModule from '~/app/_modules/login/login';
 
@@ -24,13 +24,13 @@ function LoadedPageState() {
 
 export default function AdminLoginPage() {
   const router = useRouter();
+  const params = useSearchParams();
+
   const { user, isLoading } = useAdminAuthenticationContext();
   const [isFirstLoad, setIsFirstLoad] = useState(true);
 
   const isAdminAuthenticated = Boolean(user?.id);
-  if (isAdminAuthenticated) {
-    void router.push('/admin');
-  }
+  const navigationCallback = params.get('redirect');
 
   useEffect(
     function checkFirstAdminLoginPageLoadEffect() {
@@ -40,6 +40,26 @@ export default function AdminLoginPage() {
     },
     [user, isLoading],
   );
+
+  useEffect(() => {
+    if (isAdminAuthenticated && navigationCallback) {
+      void router.push(navigationCallback);
+      return;
+    }
+
+    if (isAdminAuthenticated) {
+      void router.push('/admin');
+      return;
+    }
+  }, [isAdminAuthenticated, navigationCallback, router]);
+
+  if (isAdminAuthenticated && navigationCallback) {
+    return null;
+  }
+
+  if (isAdminAuthenticated) {
+    return null;
+  }
 
   if (isFirstLoad) {
     return <LoadingPageState />;

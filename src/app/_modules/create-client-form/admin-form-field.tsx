@@ -7,17 +7,16 @@ import {
   type SetStateAction,
 } from 'react';
 import type { CreateClientWithAdminDto } from '~/app/api/generated/model';
-import type {
-  FormErrorMessageList,
-  HandleInputBlurArgs,
-} from './create-client-form';
-import FormError from './components/form-error';
-import { updateInputData } from './utils/update-input-form';
+import FormError, {
+  type FormErrorMessageList,
+} from '~/app/_components/form/form-error';
+import { updateInputData } from '~/utils/form/update-input-form';
 import { VALIDATION_OPTIONS_FOR_CREATE_CLIENT_ADMIN } from '~/configs/create-client-input';
 import { PasswordInputForm } from './components/password-input-form';
-import Input from '../../_components/input';
-import StyledFormLabel from './components/styled-form-label';
-import StyledFormWrapper from './components/style-form-wrapper';
+import Input from '~/app/_components/input';
+import StyledFormLabel from '~/app/_components/form/styled-form-label';
+import StyledFormWrapper from '~/app/_components/form/style-form-wrapper';
+import type { HandleInputChangeArgs } from '../create-unity-form/create-unity-form';
 
 type CreateClientWithAdminDtoOnlyAdminWithoutPassword = Omit<
   CreateClientWithAdminDto['admin'],
@@ -61,10 +60,10 @@ export function AdminFormFieldSection(props: AdminFormFieldSectionProps) {
     props.onIsRequiredFieldsOk?.();
   }, [props, adminFormErrorMessageList]);
 
-  function handleOnInputBlur({
+  function updateClientInputField({
     event,
     field,
-  }: HandleInputBlurArgs<CreateClientWithAdminDtoOnlyAdminWithoutPassword>) {
+  }: HandleInputChangeArgs<CreateClientWithAdminDtoOnlyAdminWithoutPassword>) {
     const value = event.target.value;
 
     const validatedData =
@@ -182,7 +181,9 @@ export function AdminFormFieldSection(props: AdminFormFieldSectionProps) {
               <Input
                 type="text"
                 className="flex w-full"
-                onBlur={(event) => handleOnInputBlur({ event, field: 'name' })}
+                onChange={(event) =>
+                  updateClientInputField({ event, field: 'name' })
+                }
               />
             </Form.Control>
           </>
@@ -199,7 +200,9 @@ export function AdminFormFieldSection(props: AdminFormFieldSectionProps) {
               <Input
                 type="email"
                 className="flex w-full"
-                onBlur={(event) => handleOnInputBlur({ event, field: 'email' })}
+                onChange={(event) =>
+                  updateClientInputField({ event, field: 'email' })
+                }
               />
             </Form.Control>
           </>
